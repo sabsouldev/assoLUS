@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AdherentsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdherentsRepository::class)]
@@ -30,6 +32,17 @@ class Adherents
 
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
+
+    /**
+     * @var Collection<int, Cotisations>
+     */
+    #[ORM\OneToMany(targetEntity: Cotisations::class, mappedBy: 'adherent')]
+    private Collection $cotisations;
+
+    public function __construct()
+    {
+        $this->cotisations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +117,36 @@ class Adherents
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cotisations>
+     */
+    public function getCotisations(): Collection
+    {
+        return $this->cotisations;
+    }
+
+    public function addCotisation(Cotisations $cotisation): static
+    {
+        if (!$this->cotisations->contains($cotisation)) {
+            $this->cotisations->add($cotisation);
+            $cotisation->setAdherent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCotisation(Cotisations $cotisation): static
+    {
+        if ($this->cotisations->removeElement($cotisation)) {
+            // set the owning side to null (unless already changed)
+            if ($cotisation->getAdherent() === $this) {
+                $cotisation->setAdherent(null);
+            }
+        }
 
         return $this;
     }

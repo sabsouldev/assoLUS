@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CotisationsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,25 +17,17 @@ class Cotisations
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $montant = null;
+    #[ORM\Column]
+    private ?float $montant = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_paiement = null;
+    private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $statut = null;
+    #[ORM\Column]
+    private ?bool $statut = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'cotisations')]
-    private Collection $user;
-
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'cotisations')]
+    private ?Adherents $adherent = null;
 
     public function getId(): ?int
     {
@@ -56,68 +46,50 @@ class Cotisations
         return $this;
     }
 
-    public function getMontant(): ?string
+    public function getMontant(): ?float
     {
         return $this->montant;
     }
 
-    public function setMontant(string $montant): static
+    public function setMontant(float $montant): static
     {
         $this->montant = $montant;
 
         return $this;
     }
 
-    public function getDatePaiement(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date_paiement;
+        return $this->date;
     }
 
-    public function setDatePaiement(\DateTimeInterface $date_paiement): static
+    public function setDate(\DateTimeInterface $date): static
     {
-        $this->date_paiement = $date_paiement;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function isStatut(): ?bool
     {
         return $this->statut;
     }
 
-    public function setStatut(string $statut): static
+    public function setStatut(bool $statut): static
     {
         $this->statut = $statut;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
+    public function getAdherent(): ?Adherents
     {
-        return $this->user;
+        return $this->adherent;
     }
 
-    public function addUser(User $user): static
+    public function setAdherent(?Adherents $adherent): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-            $user->setCotisations($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getCotisations() === $this) {
-                $user->setCotisations(null);
-            }
-        }
+        $this->adherent = $adherent;
 
         return $this;
     }

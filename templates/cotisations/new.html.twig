@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Cotisations{% endblock %}
+
+{% block body %}
+    <h1>Create new Cotisations</h1>
+
+    {{ include('cotisations/_form.html.twig') }}
+
+    <a href="{{ path('app_cotisations_index') }}">back to list</a>
+{% endblock %}
