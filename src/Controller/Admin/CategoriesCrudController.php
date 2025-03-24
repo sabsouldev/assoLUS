@@ -15,14 +15,17 @@ class CategoriesCrudController extends AbstractCrudController
         return Categories::class;
     }
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('name', 'Nom de la catégorie'),
+            TextField::new('videoUrl', 'Vidéo (URL Youtube/Vimeo)')//ajout de la vidéo
+                ->setHelp('Lien de la vidéo Youtube ou Vimeo'),//Ajoute une aide pour l'admin
+            TextField::new('podcastUrl', 'Podcast (URL)')//ajout du podcast
+                ->setHelp('Lien du podcast'),//Ajoute une aide pour l'admin
         ];
     }
-    */
+    
 }
