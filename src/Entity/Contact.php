@@ -26,6 +26,9 @@ class Contact
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_envoi = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $sujet = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Contact
     public function setDateEnvoi(\DateTimeInterface $date_envoi): static
     {
         $this->date_envoi = $date_envoi;
+
+        return $this;
+    }
+
+    public function getSujet(): ?string
+    {
+        return $this->sujet;
+    }
+
+    public function setSujet(string $sujet): static
+    {
+        $this->sujet = $sujet;
 
         return $this;
     }
