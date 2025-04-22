@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mon espace adhérent</h1>
+
+    <div class="profil-block">
+        <h2>Mes informations de compte</h2>
+        {{ form_start(userForm) }}
+            {{ form_widget(userForm) }}
+            <button class="btn btn-primary">Mettre à jour</button>
+        {{ form_end(userForm) }}
+    </div>
+
+    <hr>
+
+    <div class="adherent-block">
+        <h2>Mes informations d’adhésion</h2>
+        {{ form_start(adherentForm) }}
+            {{ form_widget(adherentForm) }}
+            <button class="btn btn-primary">Mettre à jour</button>
+        {{ form_end(adherentForm) }}
+    </div>
+{% endblock %}
